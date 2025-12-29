@@ -42,3 +42,41 @@ It is most commonly used for:
     ✔ Faster than session-based auth
     ✔ Works well with REST APIs
 
+### Required Dependencies
+    <dependency>
+        <groupId>io.jsonwebtoken</groupId>
+        <artifactId>jjwt-api</artifactId>
+        <version>0.11.5</version>
+    </dependency>
+    
+    <dependency>
+        <groupId>io.jsonwebtoken</groupId>
+        <artifactId>jjwt-impl</artifactId>
+        <version>0.11.5</version>
+        <scope>runtime</scope>
+    </dependency>
+    
+    <dependency>
+        <groupId>io.jsonwebtoken</groupId>
+        <artifactId>jjwt-jackson</artifactId>
+        <version>0.11.5</version>
+        <scope>runtime</scope>
+    </dependency>
+
+
+### Generate JWT Token
+    String token = Jwts.builder()
+                 .setSubject(username)
+                 .claim("role", role)
+                 .setIssuedAt(new Date())
+                 .setExpiration(new Date(System.currentTimeMillis() + 3600000))
+                 .signWith(key, SignatureAlgorithm.HS256)
+                 .compact();
+
+
+### Validate JWT Token
+    Claims claims = Jwts.parserBuilder()
+                   .setSigningKey(key)
+                   .build()
+                   .parseClaimsJws(token)
+                   .getBody();
